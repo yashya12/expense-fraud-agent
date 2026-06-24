@@ -1,0 +1,54 @@
+[0:00 - HOOK]
+Hello everyone. Every year, corporate compliance and accounting departments struggle with manual expense verification, resulting in slow reimbursement times and thousands of dollars lost to duplicate receipts or policy violations. Today, I am excited to demonstrate the Real-Time Enterprise Expense and Fraud Verification Agent, which automates this process securely.
+
+(pause)
+
+[0:20 - WHAT IT IS]
+This project is built under the "Agents for Business" track. It leverages a multi-agent orchestration architecture to validate incoming corporate expense claims and receipts against corporate guidelines, and inspect them for fraudulent activity in real time.
+
+(pause)
+
+[0:40 - SHOW THE BANNER]
+(show assets/cover_page_banner.png)
+As you can see on our project banner, this agent acts as an automated, secure, and intelligent audit workflow. It is designed to run silently behind the scenes or integrate with active accounting platforms, automatically flagging high-risk submissions while passing clean claims instantly.
+
+(pause)
+
+[1:00 - ARCHITECTURE]
+(show assets/architecture_diagram.png)
+Let us walk through the architecture diagram to see how it operates under the hood. 
+First, when an employee submits an expense claim, the input immediately passes through our Security Checkpoint node. This checkpoint scrubs any sensitive information like Credit Cards or SSNs and detects prompt injection attempts.
+If it passes, the clean query is handed to the Orchestrator Agent. 
+The Orchestrator then delegates the verification to two specialized LLM sub-agents using ADK AgentTools: the Policy Compliance Agent and the Receipt Forensics Agent. 
+These agents query our custom enterprise Model Context Protocol, or MCP, server to fetch policies, validate spending categories, inspect receipt metadata, and check historical claim records for duplicates.
+Once they report back, the Orchestrator synthesizes the results. If an anomaly or violation is detected, it routes the workflow to a Human Compliance Review node where execution is paused via an ADK RequestInput event. If it is clean, it auto-approves.
+Finally, the system outputs the full report alongside structured, JSON-formatted audit logs.
+
+(pause)
+
+[2:00 - LIVE DEMO]
+(switch to playground at localhost:18081)
+Let us see the system in action with three distinct scenarios.
+
+First, let's submit a standard, valid claim: "Verify expense claim for employee EMP-1024: $45.50 for dinner at Olive Garden. Receipt ID: REC-123456, Merchant: Olive Garden, Tax: $3.50."
+(pause)
+When we run this, the security checkpoint passes it cleanly. The Policy Compliance Agent checks the meals policy via MCP and confirms it is under the daily cap of seventy-five dollars. The Receipt Forensics Agent verifies the tax math and merchant legitimacy. The Orchestrator automatically approves the transaction without needing any human intervention.
+
+Next, let's test a duplicate receipt fraud attempt: "Verify expense claim for employee EMP-4092: $250.00 for office supplies at Staples. Receipt ID: REC-998822, Merchant: Staples, Tax: $18.50."
+(pause)
+Here, the Receipt Forensics Agent invokes our MCP tool to check historical claims. The MCP server identifies that Receipt ID REC-998822 was already reimbursed to another employee earlier this year. Because of this duplicate receipt flag, the Orchestrator assigns a critical audit rating, pausing the workflow at the compliance review node. A text input box is displayed in the playground, asking the compliance officer to review the duplicate claim before proceeding.
+
+Finally, let's submit a high-risk claim that exposes private credit card numbers: "Claim for employee EMP-5050: $350.00 for Casino Entertainment and Spa. Corporate Card: 4532 7182 9012 3456. Receipt ID: CAS-777, Merchant: Bellagio, Tax: $25.00."
+(pause)
+Immediately, the Security Checkpoint scrubs the credit card number to a redacted token. The Policy Compliance Agent then analyzes the sanitised query and flags the "Casino" and "Spa" terms as strictly prohibited spending categories. The Orchestrator highlights the policy violation, and the claim is sent to human review for denial.
+
+(pause)
+
+[3:00 - SECURITY & MCP]
+Our Security Checkpoint operates entirely in-memory and outputs structured JSON logs for audit compliance. The MCP server operates as a modular, standalone stdio server, meaning we can swap out the mock database tools with live databases or ERP systems like SAP or Workday without changing the core agent logic.
+
+(pause)
+
+[3:30 - IMPACT / CLOSE]
+By integrating this intelligent agent workflow, enterprises can decrease auditing costs by eighty percent, catch receipt fraud before it is paid out, and protect employee privacy. 
+Thank you for your time, and I am happy to take any questions.

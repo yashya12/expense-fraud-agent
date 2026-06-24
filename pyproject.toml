@@ -1,0 +1,17 @@
+[project]
+name = "expense-fraud-agent"
+version = "0.1.0"
+description = "Scans corporate expense reports and receipts via MCP to flag anomalies, enforce company policies, and prevent fraudulent duplicate claims."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "google-adk[gcp]>=2.0.0,<3.0.0",
+    "mcp>=1.0.0,<2.0.0",
+    "fastapi>=0.110,<1.0",
+    "uvicorn>=0.29,<1.0",
+    "python-dotenv",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
