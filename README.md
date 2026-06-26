@@ -55,6 +55,18 @@ graph TD
 - **`make playground`** → launches the interactive ADK web playground UI (http://localhost:18081)
 - **`make run`** → local CLI / web server mode
 
+### 💡 Mock Mode (Enabled by Default)
+This project is configured with a **Mock Mode** by default. It simulates the agent workflow and tool execution locally for any query, allowing you to test the entire application instantly **without needing a Gemini API key**.
+- To test the mock mode dynamically, you can use the sample test cases below or input your own custom expense queries!
+- To switch to **Live API Mode** (connecting directly to Google's Gemini models), open [agent.py](file:///c:/Users/zodap/OneDrive/Documents/capestone%20proj/expense-fraud-agent/expense_fraud_agent/agent.py) and change `MockGemini` to `Gemini` in the model definition for the three agents:
+  ```python
+  # Change:
+  model=MockGemini(model=config.model)
+  # To:
+  model=Gemini(model=config.model)
+  ```
+  Then, add your valid `GOOGLE_API_KEY` to the `.env` file.
+
 ## Sample Test Cases
 
 ### Case 1: Standard Valid Meal Expense
@@ -104,7 +116,7 @@ Refer to the [DEMO_SCRIPT.txt](file:///c:/Users/zodap/OneDrive/Documents/capesto
    git add .
    git commit -m "Initial commit: expense-fraud-agent ADK agent"
    git branch -M main
-   git remote add origin https://github.com/<your-username>/expense-fraud-agent.git
+   git remote add origin https://github.com/yashya12/expense-fraud-agent.git
    git push -u origin main
    ```
 
